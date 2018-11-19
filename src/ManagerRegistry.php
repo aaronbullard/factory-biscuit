@@ -4,5 +4,5 @@ namespace FactoryBiscuit;
 
 interface ManagerRegistry
 {
-    public function getManagerForClass(string $class): Repository;
+    public function getRepositoryForClass(string $class): Repository;
 }

@@ -43,7 +43,7 @@ class FactoryBuilder
     protected $times = 1;
 
     /**
-     * Doctrine Manager Registry for persistence.
+     * Manager Registry for persistence.
      * 
      * @var ManagerRegistry
      */
@@ -131,7 +131,7 @@ class FactoryBuilder
             $models = [$models];
         }
 
-        $em = $this->registry->getManagerForClass($this->class);
+        $em = $this->registry->getRepositoryForClass($this->class);
         if ($em == NULL) {
             throw new RuntimeException(\sprintf('Unable to find entity manager for model: %s', $this->class));
         }

@@ -115,21 +115,22 @@ class FactoryTest extends TestCase
      */
     public function try_to_persist()
     {
-        $this->markTestSkipped();
-        // $factory = new Factory($faker, Mockery::mock(ManagerRegistry::class));
-        // $factory->define(Foo::class, function(Generator $faker, Factory $factory) {
-        //     return [
-        //         'email' => new Email($faker->safeEmail)
-        //     ];
-        // });
+        $repo = Mockery::mock(Repository::class);
+        $repo->shouldReceive('save')->once();
 
-        // $user = $this->factory->of(User::class)->create();
+        $registry = Mockery::mock(ManagerRegistry::class);
+        $registry->shouldReceive('getRepositoryForClass')->once()->with(Foo::class)
+                 ->andReturn($repo);
 
-        // $this->assertInstanceOf(UserId::class, $user->id());
-        // $this->assertNotNull($user->id()->id());
-        // $this->assertDatabaseHas('user', [
-        //     'id' => $user->id()->id()
-        // ]);
+        $factory = new Factory(Faker::create(), $registry);
+        $factory->define(Foo::class, function(Generator $faker, Factory $factory) {
+            return [
+                'bar' => $faker->word
+            ];
+        });
+
+        $foo = $factory->of(Foo::class)->create();
+        $this->assertInstanceOf(Foo::class, $foo);
     }
 
     /** @test */
