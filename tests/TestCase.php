@@ -12,9 +12,4 @@ class TestCase extends PHPUnitTestCase
         Mockery::close();
         parent::tearDown();
     }
-
-    protected function assertDatabaseHas($table, array $params)
-    {
-        $this->markTestSkipped();
-    }
 }

@@ -54,7 +54,7 @@ class FactoryBuilder
         callable $template,
         Factory $factory,
         Faker $faker,
-        ManagerRegistry $registry
+        ManagerRegistry $registry = null
     ) {
         $this->class = $class;
         $this->template = $template;
@@ -122,9 +122,14 @@ class FactoryBuilder
      *
      * @param array $attributes
      * @return mixed
+     * @throws RuntimeException
      */
     public function create(array $attributes = [])
     {
+        if(is_null($this->registry)){
+            throw new RuntimeException(__CLASS__."::".__FUNCTION__." will not work without an implementation of interface " . ManagerRegistry::class);
+        }
+
         $models = $this->make($attributes);
 
         if ($this->times === 1) {

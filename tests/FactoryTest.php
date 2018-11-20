@@ -24,10 +24,9 @@ class FactoryTest extends TestCase
     {
         parent::setUp();
 
-        $faker = Faker::create();
-        $this->factory = new Factory($faker, Mockery::mock(ManagerRegistry::class));
+        $this->factory = new Factory();
 
-        $this->factory->define(Alpha::class, function($faker, $factory){
+        $this->factory->define(Alpha::class, function(Generator $faker, Factory $factory){
             return [
                 'bar' => function() use ($factory){
                     return $factory->of(Bar::class)->make();
@@ -37,7 +36,7 @@ class FactoryTest extends TestCase
             ];
         });
 
-        $this->factory->define(Bar::class, function($faker, $factory){
+        $this->factory->define(Bar::class, function(Generator $faker, Factory $factory){
             return [
                 'bar' => $faker->word
             ];
@@ -75,7 +74,7 @@ class FactoryTest extends TestCase
      /** @test */
      public function it_only_resolves_requested_attributes()
      {
-         $this->factory->define(Foo::class, function($faker){
+         $this->factory->define(Foo::class, function(Generator $faker){
             return [
                 'bar' => $faker->name,
                 'baz' => function(){
@@ -92,7 +91,7 @@ class FactoryTest extends TestCase
          $instance = $this->factory->of(Foo::class)->make();
      }
 
-     /** @test */
+    /** @test */
     public function it_makes_an_instance_with_defined_state()
     {
         $this->factory->defineAs(Alpha::class, 'colors', function($faker, $factory){
@@ -110,10 +109,8 @@ class FactoryTest extends TestCase
         $this->assertEquals('green', $foo->baz());
     }
 
-    /**
-     * @test
-     */
-    public function try_to_persist()
+    /** @test */
+    public function it_persists_on_creation()
     {
         $repo = Mockery::mock(Repository::class);
         $repo->shouldReceive('save')->once();
@@ -131,6 +128,13 @@ class FactoryTest extends TestCase
 
         $foo = $factory->of(Foo::class)->create();
         $this->assertInstanceOf(Foo::class, $foo);
+    }
+
+    /** @test */
+    public function throws_exception_if_no_manager_registry_available_when_using_create()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->factory->of(Alpha::class)->create();
     }
 
     /** @test */

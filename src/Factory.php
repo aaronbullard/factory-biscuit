@@ -3,6 +3,7 @@
 namespace FactoryBiscuit;
 
 use Faker\Generator as Faker;
+use Faker\Factory as FakerFactory;
 
 class Factory
 {
@@ -21,9 +22,9 @@ class Factory
      */
     protected $registry;
 
-    public function __construct(Faker $faker, ManagerRegistry $registry)
+    public function __construct(Faker $faker = null, ManagerRegistry $registry = null)
     {
-        $this->faker = $faker;
+        $this->faker = is_null($faker) ? FakerFactory::create() : $faker;
         $this->registry = $registry;
     }
 
