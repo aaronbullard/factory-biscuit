@@ -107,7 +107,7 @@ $this->assertEquals('red', $foo->bar());
 $this->assertEquals('green', $foo->baz());
 ```
 
-Implement the FactoryBiscuit\ManagerRepository interface to persist instances upon creation
+Implement the FactoryBiscuit\ManagerRegistry interface to persist instances upon creation
 ```php
 $factory = new Factory(Faker::create(), $managerRegistry);
 
