@@ -4,8 +4,46 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "648628e1bb294f2276d7039016476a56",
+    "content-hash": "b0f963c267565a1437bbe74c933aed2c",
     "packages": [
+        {
+            "name": "aaronbullard/firehose",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aaronbullard/firehose.git",
+                "reference": "d07d3eee784d5454b88da1ec0a714b668008e7df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aaronbullard/firehose/zipball/d07d3eee784d5454b88da1ec0a714b668008e7df",
+                "reference": "d07d3eee784d5454b88da1ec0a714b668008e7df",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Firehose\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Bullard",
+                    "email": "aaron.bullard77@gmail.com"
+                }
+            ],
+            "time": "2018-11-21T19:10:43+00:00"
+        },
         {
             "name": "fzaninotto/faker",
             "version": "v1.8.0",

@@ -4,6 +4,7 @@ namespace FactoryBiscuit;
 
 use RuntimeException;
 use Faker\Generator as Faker;
+use Firehose\Hydrator;
 
 class FactoryBuilder
 {
