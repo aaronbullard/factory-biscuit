@@ -1,4 +1,6 @@
 # Factory Biscuit
+[![Maintainability](https://api.codeclimate.com/v1/badges/0df0a9dc08cd321aeb13/maintainability)](https://codeclimate.com/github/aaronbullard/factory-biscuit/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/0df0a9dc08cd321aeb13/test_coverage)](https://codeclimate.com/github/aaronbullard/factory-biscuit/test_coverage)
 
 Quickly create PHP class instances for testing using Faker and Firehose Hydrator.
 
@@ -105,8 +107,10 @@ $this->assertEquals('red', $foo->bar());
 $this->assertEquals('green', $foo->baz());
 ```
 
-Implement the ManagerRepository interface to persist instances upon creation
+Implement the FactoryBiscuit\ManagerRepository interface to persist instances upon creation
 ```php
+$factory = new Factory(Faker::create(), $managerRegistry);
+
 // call the 'create' method to create a persisted instance
 $user = $factory->of(User::class)->create();
 
