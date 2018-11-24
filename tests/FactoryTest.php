@@ -10,8 +10,6 @@ use FactoryBiscuit\Repository;
 use FactoryBiscuit\ManagerRegistry;
 use FactoryBiscuit\Tests\Mocks\Entity\Foo;
 use FactoryBiscuit\Tests\Mocks\Entity\Bar;
-use FactoryBiscuit\Tests\Mocks\Entity\Alpha;
-use FactoryBiscuit\Tests\Mocks\Entity\Email;
 
 class FactoryTest extends TestCase
 {
@@ -26,7 +24,7 @@ class FactoryTest extends TestCase
 
         $this->factory = new Factory();
 
-        $this->factory->define(Alpha::class, function(Generator $faker, Factory $factory){
+        $this->factory->define(Foo::class, function(Generator $faker, Factory $factory){
             return [
                 'bar' => function() use ($factory){
                     return $factory->of(Bar::class)->make();
@@ -46,25 +44,25 @@ class FactoryTest extends TestCase
     /** @test */
     public function it_makes_an_instance()
     {
-        $foo = $this->factory->of(Alpha::class)->make();
+        $foo = $this->factory->of(Foo::class)->make();
 
-        $this->assertInstanceOf(Alpha::class, $foo);
+        $this->assertInstanceOf(Foo::class, $foo);
         $this->assertInstanceOf(Bar::class, $foo->bar());
     }
 
     /** @test */
     public function it_makes_multiple_instances()
     {
-        $foos = $this->factory->of(Alpha::class)->times(3)->make();
+        $foos = $this->factory->of(Foo::class)->times(3)->make();
 
+        $this->assertInstanceOf(Foo::class, $foos[0]);
         $this->assertCount(3, $foos);
-        $this->assertInstanceOf(Alpha::class, $foos[0]);
     }
 
     /** @test */
     public function it_overrides_attributes()
     {
-        $foo = $this->factory->of(Alpha::class)->make([
+        $foo = $this->factory->of(Foo::class)->make([
             'baz' => 'newBaz'
         ]);
 
@@ -94,7 +92,7 @@ class FactoryTest extends TestCase
     /** @test */
     public function it_makes_an_instance_with_defined_state()
     {
-        $this->factory->defineAs(Alpha::class, 'colors', function($faker, $factory){
+        $this->factory->defineAs(Foo::class, 'colors', function($faker, $factory){
             return [
                 'bar' => 'red',
                 'baz' => 'green',
@@ -102,9 +100,9 @@ class FactoryTest extends TestCase
             ];
         });
 
-        $foo = $this->factory->of(Alpha::class, 'colors')->make();
+        $foo = $this->factory->of(Foo::class, 'colors')->make();
 
-        $this->assertInstanceOf(Alpha::class, $foo);
+        $this->assertInstanceOf(Foo::class, $foo);
         $this->assertEquals('red', $foo->bar());
         $this->assertEquals('green', $foo->baz());
     }
@@ -112,14 +110,19 @@ class FactoryTest extends TestCase
     /** @test */
     public function it_persists_on_creation()
     {
+        // Mock repo
         $repo = Mockery::mock(Repository::class);
         $repo->shouldReceive('save')->once();
 
+        // Mock ManagerRegistry
         $registry = Mockery::mock(ManagerRegistry::class);
         $registry->shouldReceive('getRepositoryForClass')->once()->with(Foo::class)
                  ->andReturn($repo);
 
+        // Create factory instance
         $factory = new Factory(Faker::create(), $registry);
+
+        // Define Foo::class
         $factory->define(Foo::class, function(Generator $faker, Factory $factory) {
             return [
                 'bar' => $faker->word
@@ -134,17 +137,19 @@ class FactoryTest extends TestCase
     public function throws_exception_if_no_manager_registry_available_when_using_create()
     {
         $this->expectException(\RuntimeException::class);
-        $this->factory->of(Alpha::class)->create();
+        $this->factory->of(Foo::class)->create();
     }
 
     /** @test */
     public function it_loads_from_a_file()
     {
-        $this->factory->load(__DIR__ . '/TestFactories.php');
+        $factory = new Factory();
 
-        $email = $this->factory->of(Email::class)->make();
+        $factory->load(__DIR__ . '/TestFactories.php');
 
-        $this->assertInstanceOf(Email::class, $email);
+        $foo = $factory->of(Foo::class)->make();
+
+        $this->assertInstanceOf(Foo::class, $foo);
     }
 
 }

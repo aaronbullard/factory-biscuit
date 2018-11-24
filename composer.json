@@ -2,6 +2,8 @@
     "name": "aaronbullard/factory-biscuit",
     "type": "library",
     "license": "MIT",
+    "description": "Quickly create PHP class instances for testing using Faker and Firehose Hydrator.",
+    "keywords": ["testing", "factory"],
     "authors": [
         {
             "name": "Aaron Bullard",
